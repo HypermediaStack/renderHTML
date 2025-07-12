@@ -8,15 +8,48 @@ import (
 // go test -benchmem -run=^$ -bench ^BenchmarkStatistics$ github.com/fabianpallares/renderHTML -count=10
 func BenchmarkStatistics(b *testing.B) {
 	for i := 0; i < b.N; i++ {
-		uno()
+		one()
 	}
 }
 
 func TestOne(t *testing.T) {
-	fmt.Println(uno())
+	fmt.Println(one())
 }
 
-func uno() fmt.Stringer {
+func TestTwo(t *testing.T) {
+	fmt.Println(two())
+}
+
+func two() fmt.Stringer {
+	return Html().Lang("en").AddContent(
+		Head(
+			// title
+			Title("Testing app"),
+
+			// favicon
+			Link().Rel("shortcut icon").Href("media/imgs/favicon.ico"),
+
+			// metadata
+			Meta().CharSet("UTF-8"),
+			Meta().Name("viewport").Content("width=device-width, initial-scale=1.0"),
+			Meta().HttpEquiv("X-UA-Compatible").Content("IE=edge"),
+			Meta().HttpEquiv("pragma").Content("no-cache"),
+			Meta().HttpEquiv("expires").Content("-1"),
+
+			// css
+			Link().Rel("stylesheet").Href("css/styles.css"),
+
+			// javascript
+			Script().Defer().Src("js/htmx.min.js"),
+		),
+		Body(
+			H1("Page title"),
+			P("Hello world!"),
+		),
+	)
+}
+
+func one() fmt.Stringer {
 	return Html(
 		Head(
 			// title
