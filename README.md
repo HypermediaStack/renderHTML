@@ -1,122 +1,135 @@
-<!-- <p align="center"> -->
-  <img src="logo.png" alt="renderHTML logo" />
-<!-- </p> -->
-
 # renderHTML
 
-**renderHTML** es un paquete de Go para **generar HTML desde el servidor**, pensado para quienes aman escribir código limpio, legible y alineado con las prácticas de los sistemas hypermedia.
+This Go package **generates HTML from the server**.
 
-Inspirado en el espíritu simple de la web, evita dependencias innecesarias y se enfoca en que tus vistas sean tan claras y mantenibles como tu backend.
+Designed for those who love writing clean, readable code that aligns with the practices of **hypermedia systems**.
 
-## Instalación
+Inspired by the simple spirit of the web, it avoids unnecessary dependencies and focuses on making your views as clear and maintainable as your backend.
+
+## Installation
 
 ```sh
 go get -u github.com/hypermediastack/renderHTML
 ```
 
-## ¿Qué hace?
+## What does it do?
 
-- Permite **crear árboles de elementos HTML** de forma declarativa y tipada en Go.
-- Se vuelve tan natural como escribir HTML de manera nativa, pero con todas las ventajas del tipado fuerte, autocompletado y refactoring seguro.
-- Facilita el manejo de atributos, clases, estilos y eventos con métodos intuitivos.
-- Perfecto para aplicaciones server-side que generan HTML dinámico sin depender de frameworks JavaScript complejos.
+- Allows you to **create HTML element trees** in a declarative and type-safe way with Go.
+- Feels as natural as writing native HTML, but with all the advantages of strong typing, autocomplete, and safe refactoring.
+- Makes it easy to manage attributes, classes, styles, and events with intuitive methods.
+- Perfect for server-side applications that generate dynamic HTML without depending on complex JavaScript frameworks.
 
-## Ejemplo de uso
-```Go
+## Example usage
+```go
 package main
 
 import (
-	. "renderHtml"
+    . "renderHtml"
 )
 
 func viewRoot() fmt.Stringer {
-	return Html().Lang("en").AddContent(
-		Head(
+    return Html().Lang("en").AddContent(
+        Head(
             // title
-			Title("Testing app"),
-
-			// favicon
-			Link().Rel("shortcut icon").Href("media/imgs/favicon.ico"),
-
-			// metadata
-			Meta().CharSet("UTF-8"),
-			Meta().Name("viewport").Content("width=device-width, initial-scale=1.0"),
-			Meta().HttpEquiv("X-UA-Compatible").Content("IE=edge"),
-			Meta().HttpEquiv("pragma").Content("no-cache"),
-			Meta().HttpEquiv("expires").Content("-1"),
-
-			// css
-			Link().Rel("stylesheet").Href("css/styles.css"),
-
-			// javascript
-			Script().Defer().Src("js/htmx.min.js"),
-		),
-		Body(
+            Title("Testing app"),
+            // favicon
+            Link().Rel("shortcut icon").Href("media/imgs/favicon.ico"),
+            // metadata
+            Meta().CharSet("UTF-8"),
+            Meta().Name("viewport").Content("width=device-width, initial-scale=1.0"),
+            Meta().HttpEquiv("X-UA-Compatible").Content("IE=edge"),
+            Meta().HttpEquiv("pragma").Content("no-cache"),
+            Meta().HttpEquiv("expires").Content("-1"),
+            // css
+            Link().Rel("stylesheet").Href("css/styles.css"),
+            // javascript
+            Script().Defer().Src("js/htmx.min.js"),
+        ),
+        Body(
             H1("Page title"),
             P("Hello world!"),
         ),
-	)
+    )
 }
 ```
 
-El código Golang anterior produce el siguiente texto HTML:
+The above Golang code produces the following HTML output:
 
 ```html
 <!DOCTYPE html><html lang="en"><head><title>Testing app</title><link rel="shortcut icon" href="media/imgs/favicon.ico"/><meta charset="UTF-8"/><meta name="viewport" content="width=device-width, initial-scale=1.0"/><meta http-equiv="X-UA-Compatible" content="IE=edge"/><meta http-equiv="pragma" content="no-cache"/><meta http-equiv="expires" content="-1"/><link rel="stylesheet" href="css/styles.css"/><script defer src="js/htmx.min.js"></script></head><body><h1>Page title</h1><p>Hello world!</p></body></html>
 ```
 
-## Ventajas de usar renderHTML
+## Advantages of using renderHTML
 
-- **100% tipado:** Olvídate de strings mágicos y errores tontos por tags mal cerrados.
-- **Legible y mantenible:** El código HTML es un árbol de funciones y métodos en Go, fácil de leer y refactorizar.
-- **Flexibilidad total:** Es posible agregar atributos, clases, estilos y contenido dinámico en cualquier elemento, usando métodos encadenados.
-- **Eventos nativos:** Soporta atributos `on*` para manejar eventos nativos de HTML.
-- **Extensible:** Permite sumar atributos personalizados y estructuras propias si es necesario ampliar el paquete.
-- **Sin magia, sin dependencias:** Es puro Go, sin reflexiones raras ni inyecciones de código.
-- **Sin dependencias de paquetes de terceros:** No posee ni utiliza paquetes de terceras partes, solo de la librería estandad.
-- **Filosofía hypermedia:** Pensado para construir sistemas web siguiendo las mejores prácticas clásicas de la web, manteniendo el control y la transparencia de cada respuesta.
+- **100% typed:** Forget about magic strings and silly errors from unclosed tags.
+- **Readable and maintainable:** Your HTML code is a tree of Go functions and methods, easy to read and refactor.
+- **Total flexibility:** You can add attributes, classes, styles, and dynamic content to any element, using chainable methods.
+- **Native events:** Supports `on*` attributes to handle native HTML events.
+- **Extensible:** You can add custom attributes and your own structures if you need to extend the package.
+- **No magic, no dependencies:** Pure Go, no weird reflection or code injection.
+- **No third-party packages:** Uses only Go's standard library, no external dependencies.
+- **Hypermedia philosophy:** Designed to build web systems following the classic, proven best practices of the web, keeping full control and transparency over every response.
 
-## Funcionamiento
-1 - Puede importar el paquete sin utilizar un nombre de prefijo: ```import . "renderHTML" ```.
+## How it works
 
-Al hacer esto, cada vez que escriba un nombre de elemento HTML, no deberá anteponer el nombre del paquete. 
+**1.** You can import the package without a prefix:  
+```import . "renderHTML"```
 
-2 - Todos los atributos HTML están representados. Todos tienen ayuda y todos tienen un link de referencia a https://developer.mozilla.org.
+This way, every time you write an HTML element name, you don’t have to prepend the package name.
 
-3 - Al presionar punto ("."), su editor de texto le propondrá todos los atributos que este elemento posee. Pudiendo encadenar todos los atributos. Puede despreocuparse de cometer un error de tipeo. Además, no debe recordar todos los atributos que posee cada elemento HTML; este paquete lo hace por usted.
+**2.** All HTML attributes are represented. Each one has help text and a reference link to [MDN Web Docs](https://developer.mozilla.org).
 
-4 - Todos los elementos que no sean "vacíos", poseen dos mecanismos para incluír contenido.
-- La opción tradicional es utilizando el parámetro del elemento.
-  Ejemplo:
-    ```Go
-  H1("Título")
-  Div(
-        P("Párrafo línea uno"),
-        P("Párrafo línea dos"),
-  )
-  ```
+**3.** When you type a period (`"."`), your editor will suggest all the attributes available for that element. You can stop worrying about typos. Plus, you don’t have to remember all attributes for every HTML element; this package handles it for you.
 
-- La segunda opción es utilizar el método ```AddContent(content ...any)```.
+**4.** All non-void elements have a method that is not native to HTML, called `AddAttributes(attrs ...any)`.
+This method is useful for including external attributes, such as those used by [htmx](https://htmx.org).
 
-    Sucede con frecuencia, que cada elemento requiere atributos propios: "id", "class", "name"; etc. Por esta razón es conveniente utilizar ```AddContent(...)``` para lograr ver el contenido de manera similar como en HTML nativo.
-    ```Go
-    H1().Class("title").Id("title-page").AddContent("Title")
+Example:
+
+```go
+Button("Save").Type("submit").AddAttributes(
+    "hx-post='/customer'",
+    "hx-target('#div-one')",
+    "hx-swap('innerHTML transition:true')",
+)
+Div().Id("div-one")
+```
+
+**5.** All non-void elements have two mechanisms for adding content:
+- The traditional way: using the element parameter.
+    Example:
+    ```go
+    H1("Title")
+    Div(
+        P("Line one"),
+        P("Line two"),
+    )
+    ```
+
+- The second way: using the `AddContent(content ...any)` method.
+
+    Frequently, elements require their own attributes like `id`, `class`, `name`, etc.  
+    For this reason, using `AddContent(...)` helps you see the content much like you would in native HTML.
+
+    ```go
+    H1().Class("title").Id("page-title").AddContent("Title")
     Div().Class("card").Id("card-one").AddContent(
-        P().Id("p-one").Class("help").AddContet("Line one"),
+        P().Id("p-one").Class("help").AddContent("Line one"),
         P("Line two").Id("p-two").Class("help"),
     )
+    ```
 
-## Contribuir
+## Contributing
 
-¡Se aceptan sugerencias!
+Suggestions are welcome!
 
-Si tienes nuevas ideas, encontrás algún error de programación o simplemente querés sumar tu experiencia hypermedia, sos más que bienvenida/o.
+If you have new ideas, find a bug, or simply want to share your hypermedia experience, you are more than welcome.
 
-Por favor, contactate por email a: fabianpallares@gmail.com
+Please reach out by email: fabianpallares@gmail.com.
 
-## Licencia
+## License
 
-Este proyecto está bajo licencia MIT.  
-Consulta el archivo [LICENSE](LICENSE) para más información.
+This project is licensed under the MIT License.  
+See the [LICENSE](LICENSE) file for more information.
 
-> **renderHTML:** Hecho con amor, para que la web siga siendo simple, potente y divertida.
+> **renderHTML:** Made with love, so the web stays simple, powerful, and fun.
